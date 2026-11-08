@@ -1,0 +1,37 @@
+name: Lab 12 and Lab 13 Validation
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate Lab 12 Python scripts
+        run: python -m py_compile 12_*.py
+
+      - name: Verify Lab 12 report
+        run: test -f LAB12_EXECUTION_REPORT.md
+
+      - name: Verify Lab 13 report
+        run: test -f LAB13_END_TO_END.md
+
+      - name: Verify Lab 13 workflows
+        run: |
+          test -f lab13_monitoring.yml
+          test -f lab13_runner_test.yml
+
+      - name: Success
+        run: echo "Lab 12 and Lab 13 validation completed"
